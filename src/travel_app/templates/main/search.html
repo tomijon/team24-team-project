@@ -1,0 +1,40 @@
+<!--
+Secondary search page allowing for a direct search for a country
+Author: Bartosz
+-->
+{% extends "base.html" %}
+<!--
+Sidebar setup
+-->
+{% block barcontent %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/map">Map</a></li>
+    <li><a class="active" href="/search">Search</a></li>
+    <li><a href="/admin">Admin</a></li>
+    {% if not current_user.is_authenticated %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+        <li><a href="/logout">Logout</a></li>
+    {% endif %}
+{% endblock %}
+{% block bodycontent %}
+<!--
+Form for inputing the country the user is searching for
+-->
+<div style="margin-left:15%;padding:1px 16px;">
+    <h1 style="text-align: left">
+        <span style="font-family:Pacifico">DestiKnow</span>
+        <img src="/static/images/logo.png" width="80" height="80">
+    </h1>
+    <h2>Search</h2>
+</div>
+<div style="margin-left:15%;padding:8px 16px;">
+    <form method="POST" action="{{ url_for('country.search') }}">
+        {{ form.csrf_token }}
+        {{ form.search.label }} {{ form.search() }}
+        {{ form.submit() }}
+    </form>
+</div>
+{% endblock %}

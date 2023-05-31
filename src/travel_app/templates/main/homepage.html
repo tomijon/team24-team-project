@@ -1,0 +1,40 @@
+<!--
+Homepage giving introduction to the website and sidebar to navigate to other pages
+Author: Bartosz
+-->
+{% extends "base.html" %}
+<!--
+Sidebar setup
+-->
+{% block barcontent %}
+    <li><a class="active" href="/">Home</a></li>
+    <li><a href="/map">Map</a></li>
+    <li><a href="/search">Search</a></li>
+    <li><a href="/admin">Admin</a></li>
+    {% if not current_user.is_authenticated %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+        <li><a href="/logout">Logout</a></li>
+    {% endif %}
+{% endblock %}
+<style>
+</style>
+{% block bodycontent %}
+<!--
+Adding the introduction to the page
+-->
+<div style="margin-left:15%;padding:1px 16px;">
+    <h1 style="padding: 1px 0px 0px 80px">
+        Welcome to <span style="font-family:Pacifico">DestiKnow</span><img src="/static/images/logo.png" width="80" height="80" align="right">
+    </h1>
+    <p class=description>
+        Welcome to DestiKnow! Home of extensive travel information for 95% of the world. Use the <a href="/map" class=quicklink>map</a> to navigate the world or use the handy <a href="/search" class=quicklink>search</a> function if you can't find what you're looking for.
+    </p>
+    <a href="/map">
+        <img src="/static/images/world.png" alt="map" height="400px" class="centre">
+    </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,220 @@
+<!--
+Country page showing the data on the selected country
+Authors: Cameron, Bartosz
+-->
+{% extends "base.html" %}
+<!--
+Handling the colour gradient to represent the index values
+-->
+{% block stylecontent %}
+    {% if 0.4 > total_index >= 0.2 %}
+        .squaretotal{
+           background-color: green;
+        }
+    {% elif 0.6 > total_index >= 0.4 %}
+        .squaretotal{
+           background-color: yellow;
+        }
+    {% elif 0.8 > total_index >= 0.6 %}
+        .squaretotal{
+           background-color: orange;
+        }
+    {% elif total_index >= 0.8 %}
+        .squaretotal{
+           background-color: red;
+        }
+    {% else %}
+        .squaretotal{
+           background-color: #00a8f3;
+        }
+    {% endif %}
+    {% if 0.4 > crime_index >= 0.2 %}
+        .squarecrime{
+           background-color: green;
+        }
+    {% elif 0.6 > crime_index >= 0.4 %}
+        .squarecrime{
+           background-color: yellow;
+        }
+    {% elif 0.8 > crime_index >= 0.6 %}
+        .squarecrime{
+           background-color: orange;
+        }
+    {% elif crime_index >= 0.8 %}
+        .squarecrime{
+           background-color: red;
+        }
+    {% else %}
+        .squarecrime{
+           background-color: #00a8f3;
+        }
+    {% endif %}
+        {% if 0.4 > disaster_risk >= 0.2 %}
+        .squaredisaster{
+           background-color: green;
+        }
+    {% elif 0.6 > disaster_risk >= 0.4 %}
+        .squaredisaster{
+           background-color: yellow;
+        }
+    {% elif 0.8 > disaster_risk >= 0.6 %}
+        .squaredisaster{
+           background-color: orange;
+        }
+    {% elif disaster_risk >= 0.8 %}
+        .squaredisaster{
+           background-color: red;
+        }
+    {% else %}
+        .squaredisaster{
+           background-color: #00a8f3;
+        }
+    {% endif %}
+        {% if 0.4 > corruption_index >= 0.2 %}
+        .squarecorruption{
+           background-color: green;
+        }
+    {% elif 0.6 > corruption_index >= 0.4 %}
+        .squarecorruption{
+           background-color: yellow;
+        }
+    {% elif 0.8 > corruption_index >= 0.6 %}
+        .squarecorruption{
+           background-color: orange;
+        }
+    {% elif corruption_index >= 0.8 %}
+        .squarecorruption{
+           background-color: red;
+        }
+    {% else %}
+        .squarecorruption{
+           background-color: #00a8f3;
+        }
+    {% endif %}
+    {% if 0.4 > health >= 0.2 %}
+        .squarehealth{
+           background-color: green;
+        }
+    {% elif 0.6 > health >= 0.4 %}
+        .squarehealth{
+           background-color: yellow;
+        }
+    {% elif 0.8 > health >= 0.6 %}
+        .squarehealth{
+           background-color: orange;
+        }
+    {% elif health >= 0.8 %}
+        .squarehealth{
+           background-color: red;
+        }
+    {% else %}
+        .squarehealth{
+            background-color: #00a8f3;
+        }
+    {% endif %}
+{% endblock %}
+<!--
+Sidebar setup
+-->
+{% block barcontent %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/map">Map</a></li>
+    <li><a href="/search">Search</a></li>
+    <li><a href="/admin">Admin</a></li>
+    {% if not current_user.is_authenticated %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+        <li><a href="/logout">Logout</a></li>
+    {% endif %}
+
+{% endblock %}
+{% block bodycontent %}
+<!--
+Taking the data from the database and displaying on the webpage
+-->
+<div style="margin-left:15%;padding:1px 16px;text-align:left;text-transform: capitalize">
+    <h1>{{ name }}</h1>
+</div>
+    </div>
+    <div style="margin-left:35%;padding:1px 16px;width: 50%; display: table">
+    <div style="width: 10%; display: table-cell">
+        <div class="squaretotal" style="height: 90px; width: 90px">
+            <div style="text-align: center; font-size: 12px;">Total</div>
+            <div style="text-align: center; font-size: 14px; padding-top: 20%">{{ total_index }}</div>
+        </div>
+    </div>
+    <div style="width: 10%; display: table-cell">
+        <div class="squarecrime" style="height: 70px; width: 70px">
+            <div style="text-align: center; font-size: 12px;">Crime</div>
+            <div style="text-align: center; font-size: 14px; padding-top: 20%">{{ crime_index }}</div>
+        </div>
+    </div>
+    <div style="width: 10%; display: table-cell">
+        <div class="squaredisaster" style="height: 70px; width: 70px">
+            <div style="text-align: center; font-size: 12px;">Disasters</div>
+            <div style="text-align: center; font-size: 14px; padding-top: 20%">{{ disaster_risk }}</div>
+        </div>
+    </div>
+    <div style="width: 10%; display: table-cell">
+        <div class="squarecorruption" style="height: 70px; width: 70px">
+            <div style="text-align: center; font-size: 12px;">Corruption</div>
+            <div style="text-align: center; font-size: 14px; padding-top: 20%">{{ corruption_index }}</div>
+        </div>
+    </div>
+    <div style="width: 10%; display: table-cell">
+        <div class="squarehealth" style="height: 70px; width: 70px">
+            <div style="text-align: center; font-size: 12px;">Healthcare</div>
+            <div style="text-align: center; font-size: 14px; padding-top: 20%">{{ health }}</div>
+        </div>
+    </div>
+</div>
+<div style="margin-left:15%;padding:1px 16px;text-align:left">
+    <h3>Country Description:</h3>
+    <h5>{{ description }}</h5>
+</div>
+<div style="margin-left:15%;padding:1px 16px;text-align:left">
+    <h3>Country Risk Advice:</h3>
+    <h5>{{ travel_advice }}</h5>
+</div>
+
+<div style="margin-left:15%;padding:1px 16px;text-align: left">
+    <h3>Travel Advice:</h3>
+    {% for topic in advice %}
+        <a href="{{ topic.link }}">{{ topic.topic.capitalize() }}: {{ topic.description }}</a>
+        <br>
+    {% endfor %}
+</div>
+
+<div style="margin-left:15%;padding:1px 16px;text-align:center">
+<!--
+Allowing the user to vote on the specific country that is relayed to the database
+-->
+    <h3>Votes:</h3>
+    <h5>Up Votes: {{ upvotes }}</h5>
+    <h5>Down Votes: {{ downvotes }}</h5>
+    <div style="margin-left: auto;margin-right: auto;display: table">
+        <div style="display: table-row">
+            <div style="display: table-cell">
+                <form action="/upvote" method="post">
+                    <input type="hidden" name="country_name" value="{{ name }}">
+                    <button name="upvoteButton" type="submit">Upvote</button>
+                </form>
+            </div>
+            <div style="display: table-cell">
+                <form action="/downvote" method="post">
+                    <input type="hidden" name="country_name" value="{{ name }}">
+                    <button name="downvoteButton" type="submit">Downvote</button>
+                </form>
+            </div>
+            <div style="display: table-cell">
+                <form action="/vote/reset" method="post">
+                    <input type="hidden" name="country_name" value="{{ name }}">
+                    <button name="resetvoteButton" type="submit">Reset Vote</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+<!--
+Base template for all pages, style and setting up flashing messages for errors
+Author: Bartosz
+-->
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+<head>
+    <style>
+        h1 {text-align: center;
+            font-size: 55px;}
+        p {
+            text-align: center;
+            font-size: 16px;
+            font-family: consolas;
+            font-weight: bold;
+            padding: 5px 20px 20px;
+        }
+
+        .edit-form {
+            text-align: left;
+            padding: 5px 5px;
+            margin-right: auto;
+            width: 200px;
+        }
+
+        .description {
+            background-color: #555;
+            padding: 20px 100px;
+            color: #eeeeee;
+        }
+
+        .quicklink {
+            text-decoration: underline;
+            color: #c2fc03;
+        }
+
+        ul1 {text-align: center}
+        .centre {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        body {
+            margin: 0;
+            font-family: consolas;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 15%;
+            background-color: #f1f1f1;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+            border-radius: 0px 20px 20px 0px;
+        }
+        li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+        li a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+        li a.active {
+            background-color: #6783de;
+            color: white;
+        }
+        svg path{
+            fill: #555;
+            stroke: #eee;
+            stroke-width: .25;
+       }
+       svg path:hover{
+           fill: #6783de;
+           transition: 0.6s;
+           cursor: pointer;
+       }
+       <!-- Flash messages configuration -->
+       .flash {
+           list-style-type: none;
+           padding: 10px;
+           margin-left: 15%;
+           position: fixed;
+           top: 0;
+           width: 85%;
+           box-sizing: border-box;
+           z-index: 9999;
+           text-align: center;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           flex-wrap: wrap;
+           height: auto;
+           border-radius: 15px;
+           flex-grow: 1;
+           background-color: #f8d7da;
+       }
+       .flash.success {
+           background-color: #d4edda; /* green */
+           color: #155724;
+       }
+       .flash.warning {
+           background-color: #fff3cd; /* yellow */
+           color: #856404;
+       }
+       .flash.error {
+           background-color: #f8d7da; /* red */
+           color: #721c24;
+       }
+        {% block stylecontent %}
+        {% endblock %}
+    </style>
+</head>
+<body>
+
+<ul>
+    {% block barcontent %}
+    {% endblock %}
+</ul>
+<!-- This div will contain the flash messages -->
+<div class="hero-body">
+    <div class="container has-text-centered">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block bodycontent %}
+        {% endblock %}
+    </div>
+</div>
+<!-- This script will hide the flash messages after 3 seconds -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    setTimeout(function() {
+        $(".flashes").fadeOut("slow");
+    }, 3000); // <-- time in milliseconds -->
+});
+</script>
+</body>
+</html>
