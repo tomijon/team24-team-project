@@ -9,21 +9,10 @@ load_dotenv()
 app = Flask(__name__)
 
 # Setup app config
-app.config["DB_ADDRESS"] = getenv("DB_ADDRESS")
-app.config["DB_PORT"] = int(getenv("DB_PORT"))
-app.config["DB_NAME"] = getenv("DB_NAME")
-app.config["DB_USERNAME"] = getenv("DB_USERNAME")
-app.config["DB_PASSWORD"] = getenv("DB_PASSWORD")
-
 app.config['SECRET_KEY'] = getenv("SECRET_KEY")
 
 # Setup sqlalchemy side of app config
-app.config["SQLALCHEMY_DATABASE_URI"] = (f"mysql://"
-                                         + app.config["DB_USERNAME"] + ":"
-                                         + app.config["DB_PASSWORD"] + "@"
-                                         + app.config["DB_ADDRESS"] + ":"
-                                         + str(app.config["DB_PORT"]) + "/"
-                                         + app.config["DB_NAME"])
+app.config["SQLALCHEMY_DATABASE_URI"] = (f"sqlite:///travel_advice")
 app.config['SQLALCHEMY_ECHO'] = getenv("SQLALCHEMY_ECHO") == "True"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = (
         getenv("SQLALCHEMY_TRACK_MODIFICATIONS") == "True")

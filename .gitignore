@@ -4,7 +4,6 @@ src/travel_app/main/__pycache__/
 src/travel_app/users/__pycache__/
 src/travel_app/database/models/__pycache__/
 src/travel_app/venv/
-src/travel_app/instance/
 src/travel_app/.env
 .git/
 .pytest_cache/
