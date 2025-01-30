@@ -1,11 +1,5 @@
-<!--
-Secondary search page allowing for a direct search for a country
-Author: Bartosz
--->
 {% extends "base.html" %}
-<!--
-Sidebar setup
--->
+
 {% block barcontent %}
     <li><a href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
@@ -20,21 +14,22 @@ Sidebar setup
     {% endif %}
 {% endblock %}
 {% block bodycontent %}
-<!--
-Form for inputing the country the user is searching for
--->
+
+<center>
 <div style="margin-left:15%;padding:1px 16px;">
     <h1 style="text-align: left">
         <span style="font-family:Pacifico">DestiKnow</span>
-        <img src="/static/images/logo.png" width="80" height="80">
+        <img align="right" src="/static/images/logo.png" width="80" height="80" align="right">
     </h1>
     <h2>Search</h2>
 </div>
 <div style="margin-left:15%;padding:8px 16px;">
-    <form method="POST" action="{{ url_for('country.search') }}">
-        {{ form.csrf_token }}
-        {{ form.search.label }} {{ form.search() }}
-        {{ form.submit() }}
-    </form>
+<form method="POST" action="{{ url_for('country.search') }}">
+    {{ form.csrf_token }}
+    {{ form.search.label }} {{ form.search() }}
+    {{ form.submit() }}
+</form>
 </div>
+</center>
+
 {% endblock %}

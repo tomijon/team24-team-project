@@ -1,11 +1,4 @@
-<!--
-Country page showing the data on the selected country
-Authors: Cameron, Bartosz
--->
 {% extends "base.html" %}
-<!--
-Handling the colour gradient to represent the index values
--->
 {% block stylecontent %}
     {% if 0.4 > total_index >= 0.2 %}
         .squaretotal{
@@ -113,9 +106,6 @@ Handling the colour gradient to represent the index values
         }
     {% endif %}
 {% endblock %}
-<!--
-Sidebar setup
--->
 {% block barcontent %}
     <li><a href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
@@ -131,9 +121,6 @@ Sidebar setup
 
 {% endblock %}
 {% block bodycontent %}
-<!--
-Taking the data from the database and displaying on the webpage
--->
 <div style="margin-left:15%;padding:1px 16px;text-align:left;text-transform: capitalize">
     <h1>{{ name }}</h1>
 </div>
@@ -178,42 +165,26 @@ Taking the data from the database and displaying on the webpage
     <h3>Country Risk Advice:</h3>
     <h5>{{ travel_advice }}</h5>
 </div>
-
-<div style="margin-left:15%;padding:1px 16px;text-align: left">
-    <h3>Travel Advice:</h3>
-    {% for topic in advice %}
-        <a href="{{ topic.link }}">{{ topic.topic.capitalize() }}: {{ topic.description }}</a>
-        <br>
-    {% endfor %}
-</div>
-
-<div style="margin-left:15%;padding:1px 16px;text-align:center">
-<!--
-Allowing the user to vote on the specific country that is relayed to the database
--->
+<div style="margin-left:15%;padding:1px 16px;height:300px;text-align:center">
     <h3>Votes:</h3>
     <h5>Up Votes: {{ upvotes }}</h5>
     <h5>Down Votes: {{ downvotes }}</h5>
-    <div style="margin-left: auto;margin-right: auto;display: table">
-        <div style="display: table-row">
-            <div style="display: table-cell">
-                <form action="/upvote" method="post">
-                    <input type="hidden" name="country_name" value="{{ name }}">
-                    <button name="upvoteButton" type="submit">Upvote</button>
-                </form>
-            </div>
-            <div style="display: table-cell">
-                <form action="/downvote" method="post">
-                    <input type="hidden" name="country_name" value="{{ name }}">
-                    <button name="downvoteButton" type="submit">Downvote</button>
-                </form>
-            </div>
-            <div style="display: table-cell">
-                <form action="/vote/reset" method="post">
-                    <input type="hidden" name="country_name" value="{{ name }}">
-                    <button name="resetvoteButton" type="submit">Reset Vote</button>
-                </form>
-            </div>
+</div>
+<div style="margin-left:15%;padding:1px 16px;width: 100%; display: table">
+    <div style="display: table-row">
+        <div style="width: 20%; display: table-cell">
+			<form action="/upvote" method="post">
+				<input type="hidden" name="country_name" value="{{ name }}">
+				<button name="upvoteButton" type="submit">Upvote</button>
+			</form>
+			<form action="/downvote" method="post">
+				<input type="hidden" name="country_name" value="{{ name }}">
+				<button name="downvoteButton" type="submit">Downvote</button>
+			</form>
+			<form action="/vote/reset" method="post">
+				<input type="hidden" name="country_name" value="{{ name }}">
+				<button name="resetvoteButton" type="submit">Reset Vote</button>
+			</form>
         </div>
     </div>
 </div>

@@ -1,11 +1,5 @@
-<!--
-Homepage giving introduction to the website and sidebar to navigate to other pages
-Author: Bartosz
--->
 {% extends "base.html" %}
-<!--
-Sidebar setup
--->
+
 {% block barcontent %}
     <li><a class="active" href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
@@ -22,9 +16,7 @@ Sidebar setup
 <style>
 </style>
 {% block bodycontent %}
-<!--
-Adding the introduction to the page
--->
+
 <div style="margin-left:15%;padding:1px 16px;">
     <h1 style="padding: 1px 0px 0px 80px">
         Welcome to <span style="font-family:Pacifico">DestiKnow</span><img src="/static/images/logo.png" width="80" height="80" align="right">

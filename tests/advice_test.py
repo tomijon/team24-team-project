@@ -13,7 +13,7 @@ db = get_database()
 from database.models.advice import *
 
 
-# Fake advice class
+# Fake user class
 class FakeAdvice():
     def __init__(self, topic, description, link, id=9999):
         self.id = id

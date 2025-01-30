@@ -36,16 +36,27 @@ class Country(_db.Model):
     health = _db.Column(_db.Float, default=0.0)
 
     def __eq__(self, other):
-        if other:
-            assert isinstance(other, Country)
-            return self.id == other.id
-        return False
+        assert isinstance(other, Country)
+        return self.id == other.id
 
     def __hash__(self):
         return self.id
         
     def __repr__(self):
         return f"Country <{self.name}>"
+
+
+def all_country_names() -> list[str]:
+    """Fetch all the country names from the database.
+
+    Must be ran within app context.
+
+    Returns a list of strings containing every name.
+    """
+    results = Country.query.all()
+    if results:
+        results = [country.name for country in Country.query.all()]
+    return results
 
 
 def get_country_by_name(name: str) -> Country:
@@ -61,6 +72,15 @@ def get_country_by_name(name: str) -> Country:
     result = Country.query.filter_by(name=name).first()
     return result
 
+
+def get_all_countries() -> set:
+    """Fetch all the countries from the database.
+
+    Returns:
+        Returns all the countries as part of a set.
+    """
+    return set(Country.query.all())
+
   
 def remove_country(country: Country):
     """Removes a country from the database.
@@ -73,7 +93,7 @@ def remove_country(country: Country):
         country - the country to remove
     """
     # Check country in db before continuing.
-    in_db = Country.query.filter_by(id=country.id).first() != None
+    in_db = Country.query.filter_by(id=country.id) != None
     if not in_db:
         return
 
@@ -103,7 +123,6 @@ def add_country(country: Country):
     Parameters:
         country - the country to add
     """
-    assert isinstance(country, Country), "Expected Country object"
     _db.session.add(country)
     _db.session.commit()
 

@@ -1,15 +1,10 @@
-"""Module for app routes to webpages.
-
-Author(s): Thomas, Renato, Cameron
-"""
 from werkzeug.security import generate_password_hash, check_password_hash
 from users.forms import *
 from database.database import get_database
 from database.models.country import get_country_by_name
 from database.models import uservotes as uv
-from database.models.user import *
-from database.models.countryadvice import get_advice
-from flask import *
+from database.models import user as u
+from flask import Blueprint, render_template, abort, flash, redirect, url_for, request, get_flashed_messages
 from flask_login import login_user, logout_user, login_required, current_user
 from session import role_required
 
@@ -19,8 +14,7 @@ admin_blueprint = Blueprint('admin', __name__, template_folder='templates')
 country_blueprint = Blueprint('country', __name__, template_folder='templates')
 search_blueprint = Blueprint('search', __name__, template_folder='templates')
 login_blueprint = Blueprint('login', __name__, template_folder='templates')
-register_blueprint = Blueprint('register', __name__,
-                               template_folder='templates')
+register_blueprint = Blueprint('register', __name__, template_folder='templates')
 
 isSearch = True
 country = None
@@ -36,8 +30,8 @@ def map():
 
 
 @admin_blueprint.route('/admin', methods=['GET', 'POST'])
-@role_required('admin')
 @login_required
+@role_required('admin')
 def admin():
     global isSearch
     global country
@@ -111,39 +105,30 @@ def country():
 @country_blueprint.route('/search', methods=['GET', 'POST'])
 def search():
     """ Search for a country by name.
-    If the country is not found, flash a message and return to the
-    search page.
-    If the country is found, display the country information on the
-    country page.
+        If the country is not found, flash a message and return to the search page
+        If the country is found, display the country information on the country page
     """
     form = SearchForm()
     if form.validate_on_submit():
         country = get_country_by_name(form.search.data.lower())
         if country is not None:
             return redirect(f"/country/{country.name}")
-        flash(f'Country "{form.search.data}" not found. Please try again.',
-              'warning')
+        flash(f'Country "{form.search.data}" not found. Please try again.', 'warning')
     return render_template('main/search.html', form=form)
 
 
 @country_blueprint.route('/country/<country_name>')
 def show_country(country_name):
-    """Render the country information to the webpage."""
     country = get_country_by_name(country_name)
     if country:
         upvotes = len(uv.get_votes(country, uv.VoteType.UPVOTE))
         downvotes = len(uv.get_votes(country, uv.VoteType.DOWNVOTE))
-        total_index = round((country.corruption_index
-                             + country.crime_index
-                             + country.health
-                             + country.disaster_risk) / 4, 4)
-        advice = get_advice(country)
+        total_index = round((country.corruption_index + country.crime_index + country.health + country.disaster_risk) / 4, 4)
         return render_template('main/country.html',
                                **vars(country),
                                upvotes=upvotes,
                                downvotes=downvotes,
-                               total_index=total_index,
-                               advice=advice)
+                               total_index= total_index)
     abort(404)
 
 
@@ -153,13 +138,12 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        if validate_user(username, password):
-            login_user(get_user_by_name(username))
+        if u.validate_user(username, password):
+            login_user(u.get_user_by_name(username))
             flash(f'Logged in successfully.', 'success')
             return redirect(url_for('main.index'))
         else:
-            flash('Login unsuccessful. Please check username and password.',
-                  'warning')
+            flash('Login unsuccessful. Please check username and password.', 'warning')
     if form.errors:
         print(form.errors)
     return render_template('main/login.html', form=form)
@@ -171,13 +155,13 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        existing_user = get_user_by_name(username)
+        existing_user = u.get_user_by_name(username)
         if existing_user is not None:
             flash(f'Username "{username}" is already taken. Please try again.', 'warning')
             return render_template('main/register.html', form=form)
         else:
-            new_user = User(username=username, password=password, role='guest')
-            add_user(new_user)
+            new_user = u.User(username=username, password=password, role='guest')
+            u.add_user(new_user)
             flash(f'Account created for {form.username.data}!', 'success')
             return redirect(url_for('login.login'))
     if form.errors:
@@ -197,21 +181,20 @@ def logout():
 @login_required
 def upvote():
     country_name = request.form.get('country_name')
+    print(country_name)
     country = get_country_by_name(country_name)
     if country:
-        user = get_user_by_name(current_user.username)
+        user = u.get_user_by_name(current_user.username)
         if uv.get_user_vote(user, country) == None:
             new_vote = uv.UserVote()
             new_vote.country_id = country.id
             new_vote.user_id = current_user.id
             new_vote.vote_id = uv.VoteType.UPVOTE.value
             uv.add_vote(new_vote)
-            flash(f"You have upvoted {country_name.capitalize()}'s"
-                  + " information.", 'success')
+            flash(f"You have upvoted {country_name.capitalize()}'s information.", 'success')
             return redirect("/country/%s" % country_name)
         else:
-            flash(f'You have already voted for {country_name.capitalize()}.',
-                  'warning')
+            flash(f'You have already voted for {country_name.capitalize()}.', 'warning')
             return redirect("/country/%s" % country_name)
     else:
         abort(404)
@@ -221,21 +204,20 @@ def upvote():
 @login_required
 def downvote():
     country_name = request.form.get('country_name')
+    print(country_name)
     country = get_country_by_name(country_name)
     if country:
-        user = get_user_by_name(current_user.username)
+        user = u.get_user_by_name(current_user.username)
         if uv.get_user_vote(user, country) == None:
             new_vote = uv.UserVote()
             new_vote.country_id = country.id
             new_vote.user_id = current_user.id
             new_vote.vote_id = uv.VoteType.DOWNVOTE.value
             uv.add_vote(new_vote)
-            flash(f"You have downvoted {country_name.capitalize()}'s"
-                  + " information.", 'success')
+            flash(f"You have downvoted {country_name.capitalize()}'s information.", 'success')
             return redirect("/country/%s" % country_name)
         else:
-            flash(f'You have already voted for {country_name.capitalize()}.',
-                  'warning')
+            flash(f'You have already voted for {country_name.capitalize()}.', 'warning')
             return redirect("/country/%s" % country_name)
     else:
         abort(404)
@@ -248,16 +230,14 @@ def reset_vote():
     print(country_name)
     country = get_country_by_name(country_name)
     if country:
-        user = get_user_by_name(current_user.username)
+        user = u.get_user_by_name(current_user.username)
         vote = uv.get_user_vote(user, country)
         if vote != None:
             uv.remove_vote(vote)
-            flash(f"You have removed your vote for "
-                  + "{country_name.capitalize()}.", 'success')
+            flash(f'You have removed your vote for {country_name.capitalize()}.', 'success')
             return redirect("/country/%s" % country_name)
         else:
-            flash(f'You have not voted for {country_name.capitalize()}.',
-                  'warning')
+            flash(f'You have not voted for {country_name.capitalize()}.', 'warning')
             return redirect("/country/%s" % country_name)
     else:
         abort(404)

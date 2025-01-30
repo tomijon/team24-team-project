@@ -1,11 +1,5 @@
-<!--
-Registering a new user
-Author: Bartosz
--->
 {% extends "base.html" %}
-<!--
-Sidebar setup
--->
+
 {% block barcontent %}
     <li><a href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
@@ -13,16 +7,14 @@ Sidebar setup
     <li><a href="/admin">Admin</a></li>
     {% if not current_user.is_authenticated %}
         <li><a href="/login">Login</a></li>
-        <li><a class="active" href="/register">Register</a></li>
+        <li><a href="/register">Register</a></li>
     {% endif %}
     {% if current_user.is_authenticated %}
         <li><a href="/logout">Logout</a></li>
     {% endif %}
 {% endblock %}
 {% block bodycontent %}
-<!--
-Allowing the user to input username and password to register into the database
--->
+
 <div style="margin-left:15%;padding:1px 16px;">
     <h1 style="text-align: left">
         <span style="font-family:Pacifico">DestiKnow</span>
@@ -31,13 +23,13 @@ Allowing the user to input username and password to register into the database
     <h2>Register</h2>
 </div>
 <div style="margin-left:15%;padding:8px 16px;">
-    <form method="POST">
-        {{ form.csrf_token }}
-        {{ form.username.label }} {{ form.username() }}
-        {{ form.password.label }} {{ form.password() }}
-        {{ form.confirm_password.label }} {{ form.confirm_password() }}
-        {{ form.submit() }}
-    </form>
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ form.username.label }} {{ form.username() }}
+    {{ form.password.label }} {{ form.password() }}
+    {{ form.confirm_password.label }} {{ form.confirm_password() }}
+    {{ form.submit() }}
+</form>
 </div>
 
 {% endblock %}

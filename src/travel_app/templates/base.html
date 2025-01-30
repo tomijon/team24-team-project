@@ -1,7 +1,3 @@
-<!--
-Base template for all pages, style and setting up flashing messages for errors
-Author: Bartosz
--->
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
@@ -81,13 +77,13 @@ Author: Bartosz
            transition: 0.6s;
            cursor: pointer;
        }
-       <!-- Flash messages configuration -->
        .flash {
            list-style-type: none;
            padding: 10px;
-           margin-left: 15%;
+           margin: 0;
            position: fixed;
            top: 0;
+           left: 15%;
            width: 85%;
            box-sizing: border-box;
            z-index: 9999;
@@ -123,7 +119,7 @@ Author: Bartosz
     {% block barcontent %}
     {% endblock %}
 </ul>
-<!-- This div will contain the flash messages -->
+
 <div class="hero-body">
     <div class="container has-text-centered">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -142,7 +138,7 @@ Author: Bartosz
 <script>
 $(document).ready(function() {
     setTimeout(function() {
-        $(".flashes").fadeOut("slow");
+        $(".flashes").fadeOut('slow');
     }, 3000); // <-- time in milliseconds -->
 });
 </script>

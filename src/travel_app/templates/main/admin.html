@@ -1,20 +1,9 @@
-<!--
-Making changes to the database by an admin
-Authors: Cameron, Bartosz
-
--->
-
 {% extends "base.html" %}
-<!--
-Sidebar setup
--->
+
 {% block barcontent %}
     <li><a href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
     <li><a href="/search">Search</a></li>
-    <!--
-    Checking that the user is authenticated as an admin
-    -->
     {% if current_user.is_authenticated %}
         <li><a href="/logout">Logout</a></li>
     {% endif %}
@@ -25,9 +14,7 @@ Sidebar setup
         <span style="font-family:Pacifico">DestiKnow</span>
         <img align="right" src="/static/images/logo.png" width="80" height="80" align="right">
     </h1>
-    <!--
-    Checking valid country being serched for, if valid shows editing columns
-    -->
+
     {% if country_form %}
         <form method="POST">
             {{ country_form.csrf_token }}

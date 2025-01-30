@@ -1,18 +1,12 @@
-<!--
-logining in as a user or admin
-Author: Bartosz
--->
 {% extends "base.html" %}
-<!--
-Sidebar setup
--->
+
 {% block barcontent %}
     <li><a href="/">Home</a></li>
     <li><a href="/map">Map</a></li>
     <li><a href="/search">Search</a></li>
     <li><a href="/admin">Admin</a></li>
     {% if not current_user.is_authenticated %}
-        <li><a class="active" href="/login">Login</a></li>
+        <li><a href="/login">Login</a></li>
         <li><a href="/register">Register</a></li>
     {% endif %}
     {% if current_user.is_authenticated %}
@@ -20,9 +14,7 @@ Sidebar setup
     {% endif %}
 {% endblock %}
 {% block bodycontent %}
-<!--
-Entering a username and password to login
--->
+
 <div style="margin-left:15%;padding:1px 16px;">
     <h1 style="text-align: left">
         <span style="font-family:Pacifico">DestiKnow</span>
@@ -31,12 +23,12 @@ Entering a username and password to login
     <h2>Login</h2>
 </div>
 <div style="margin-left:15%;padding:8px 16px;">
-    <form method="POST">
-        {{ form.csrf_token }}
-        {{ form.username.label }} {{ form.username() }}
-        {{ form.password.label }} {{ form.password() }}
-        {{ form.submit() }}
-    </form>
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ form.username.label }} {{ form.username() }}
+    {{ form.password.label }} {{ form.password() }}
+    {{ form.submit() }}
+</form>
 </div>
 
 {% endblock %}

@@ -31,7 +31,7 @@ def setup_module():
     global test_advice
     global test_country
 
-    print("Setting up countryadvice_test module...")
+    print("Setting up uservote_test module...")
     
     # Set up test data.
     with app.app_context():    
@@ -58,7 +58,7 @@ def setup_module():
         # Get test user and test_country.
         test_advice = get_advice_by_topic("test_topic")
         test_country = get_country_by_name(country_name)
-    print("countryadvice_test module setup complete.")
+    print("uservote_test module setup complete.")
 
 
 def teardown_module():
@@ -66,7 +66,7 @@ def teardown_module():
     global test_advice
     global test_country
     
-    print("Tearing down countryadvice_test module...")
+    print("Tearing down uservote_test module...")
 
     with app.app_context():
         remove_country_advice(test_country, test_advice)

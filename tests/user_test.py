@@ -34,7 +34,7 @@ def setup_module():
     global username
     global password
 
-    print("Setting up user_test module...")
+    print("Setting up uservote_test module...")
     
     # Set up test data.
     with app.app_context():
@@ -59,7 +59,7 @@ def teardown_module():
     """Removes the test data from the database."""
     global test_user
 
-    print("Tearing down user_test module...")
+    print("Tearing down uservote_test module...")
 
     with app.app_context():
         db.session.delete(test_user)

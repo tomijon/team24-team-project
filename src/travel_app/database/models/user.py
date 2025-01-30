@@ -1,6 +1,6 @@
 """This module contains the model class for the user login information.
 
-Author(s): Thomas, Renato
+Author(s): Thomas,
 """
 from database.database import _db
 from flask_login import UserMixin
@@ -22,9 +22,7 @@ class User(UserMixin, _db.Model):
     password = _db.Column(_db.String(64), nullable=False)
     role = _db.Column(_db.String(16), nullable=False)
 
-    def __init__(self, username, password, role="guest", id=None):
-        if id:
-            self.id = id
+    def __init__(self, username, password, role="guest"):
         self.username = username
         self.password = hashpw(password.encode("utf-8"), salt=gensalt())
         self.role = role
